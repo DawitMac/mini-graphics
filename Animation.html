@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 100vw;
+            height: 99vh;
+            position: relative;
+            overflow: hidden;
+            
+           
+        }
+        .carA{
+            width: 100px;
+            height: 80px;
+            background-image: url(car1.png);
+            background-position: center;
+            background-size: 100% 100%;
+            position: absolute;
+            bottom: 2%;
+            animation: cloud;
+            transition: all .0s;
+
+        }
+        .carB{
+            width: 90px;
+            height: 65px;
+            background-image: url(th_6.png);
+            background-position: center;
+            background-size: 100% 100%;
+            position: absolute;
+            left: 5%;
+            bottom: 18%;
+            z-index: 0;
+        }
+        .img_div{
+            position: absolute;
+            bottom: 10%;
+            top: 200px;
+            left: 500px;
+        }
+        .light{
+            width: 45px;
+            height: 50px;
+            bottom: 58%;
+            left: 8.5%;
+            right: 0%;
+            position: absolute;
+            border: 5px solid;
+            border-radius: 50%;
+            transition : all .10s ;         
+
+        }
+        #canvas{
+            background-color: rgb(110, 110, 253);
+            background-image: url(1.jpg);
+            background-size: 100% 100%;
+            background-position: center;
+            position: absolute;
+            height: 100vh;
+            width:100%;
+            top: 0%;
+            z-index: -1;
+            
+        }
+        .cloud1{
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            background-image: url(cloud.png);
+            background-size: 100% 100%;
+            animation-name: cloud;
+            animation-duration: 200s;
+            animation-iteration-count: infinite;
+            opacity: 0.5;
+
+
+        }
+        .cloud2{
+            width: 130px;
+            height: 120px;
+            position: absolute;
+            left: 50px;
+            background-image: url(cloud_2.png);
+            background-size: 100% 100%;
+            animation-name: cloud;
+            animation-duration: 250s;
+            animation-iteration-count: infinite;
+        }
+       .bird{
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            left: 0%;
+            top: 0%;
+            background-image: url(bird.gif);
+            background-size: 100% 100%;
+            animation-name: cloud;
+            animation-iteration-count: infinite;
+            animation-duration: 25s;
+
+       }
+       .riding{
+           width: 100px;
+           height: 80px;
+           position: absolute;
+           background-image: url(R.png);
+           background-size: 100% 100%;
+           bottom: 198px;
+           left: 250px;
+          
+       }
+        @keyframes cloud{
+            from{transform : translate(0px);}
+            to{
+                transform: translate(1300px);
+            }
+        }
+    </style>
+</head>
+<body>
+   
+<div class="container">
+    <canvas id="canvas"></canvas>
+    <div class="cloud1"></div>
+    <div class="cloud2"></div>
+    <div class="bird"></div>
+    <img src="3.jpg" alt="" class="light" id="light">
+    <div class="carA" id="carA"></div>
+    <div class="carB" id="carA"></div>
+    <div class="sky"></div>
+    <div class="riding"></div>
+    
+</div>
+
+
+<script src="jquery.js"></script>
+
+
+    <script>
+        var carA = document.getElementById("carA");
+        var carB = document.getElementById("carB");
+        var light = document.getElementById("light");
+        var carAx = 0;
+        var carAy = 0;
+        var carBx = 0;
+        var carAdx = 5;
+        var carBdx = 6;
+        var i = 3;
+        var count = 1;
+        var x=0;
+        var y=0;
+        var dx=10;
+
+        setInterval(function(){
+            carAx = carAx + carAdx;
+            carBx = carBx + carBdx;
+            count++;
+           $('.carA').css({"transform":"translate("+carAx+"px,"+carAy+"px)"});
+           $('.carB').css({"transform":"translate("+carBx+"px,"+carAy+"px)"});
+            light.src=i+".jpg";
+           
+            if(count == 30){
+                i=70;
+                $('.light').css({"transform":"translate("+0+"px,"+70+"px)"});
+                carAdx=0;
+                carBdx=0;
+               }
+            
+            else if(count ==78){
+                i=3;
+                $('.light').css({"transform":"translate("+0+"px,"+0+"px)"});
+                count=0;
+                carAdx=5;
+                carBdx=6;
+            }
+            else if(carAx>1400)
+            {
+                $('.carA').css({"transform":"translate("+(-1400)+"px,"+carAy+"px)"});
+                carAx=0;
+
+            }
+            else if(carBx>1400)
+            {
+                $('.carA').css({"transform":"translate("+(-1400)+"px,"+carAy+"px)"});
+                carBx=0;
+
+            }
+        
+        document.onkeydown = check_key;
+        function check_key(e){
+            e = e||window.event;
+            if(e.keyCode=='39'){
+                move_car("right");
+            }
+            if(e.keyCode=='37'){
+                move_car("left");
+            }
+            if(e.keyCode=='38'){
+                move_car("up");
+            }
+            if(e.keyCode=='40'){
+                move_car("down");
+            }
+        }
+        function move_car(direction){
+             if(direction == "right"){
+                 x=x+dx;
+                 $('.riding').css({"transform":"translate("+x+"px,"+y+"px)rotate(0deg)"});
+             }
+             else if(direction == "left"){
+                 x=x-dx;
+                 $('.riding').css({"transform":"translate("+x+"px,"+y+"px)rotate(0deg)scaleX("+(-1)+")"});             }
+             else if(direction == "up"){
+                 y=y-dx;
+                 $('.riding').css({"transform":"translate("+x+"px,"+y+"px)rotate(270deg)"});
+             }
+             else if(direction == "down"){
+                 y=y+dx;
+                 $('.riding').css({"transform":"translate("+x+"px,"+y+"px)rotate(90deg)"});
+             }
+        }
+            
+
+        },100);
+       
+       
+
+
+    </script>
+    
+    <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext('2d');
+    
+   ctx.beginPath();
+   ctx.fillStyle="grey";
+   ctx.fillRect(0,100,1000,100);
+   ctx.fill();
+      
+   ctx.beginPath();
+   ctx.rect(0,122,10,5);
+   ctx.rect(15,122,20,5);
+   ctx.rect(45,122,20,5);
+   ctx.rect(75,122,20,5);
+   ctx.rect(105,122,20,5);
+   ctx.rect(135,122,20,5);
+   ctx.rect(165,122,20,5);
+   ctx.rect(195,122,20,5);
+   ctx.rect(225,122,20,5);
+   ctx.rect(255,122,20,5);
+   ctx.rect(285,122,20,5);
+   ctx.fillStyle="white";
+   ctx.fill();
+  
+ ctx.beginPath();
+ ctx.moveTo(210,70);
+ ctx.lineTo(210,90);
+ ctx.lineTo(245,90);
+ ctx.lineTo(245,70);
+ ctx.lineTo(225,60);
+ ctx.lineTo(210,70);
+ ctx.fillStyle="purple";
+ ctx.fill();
+ //ctx.stroke();
+ ctx.beginPath();
+ ctx.rect(215,77,7,12);
+ ctx.fillStyle="black";
+ ctx.fill();
+ ctx.stroke();
+ ctx.beginPath();
+ ctx.moveTo(225,60);
+ ctx.lineTo(270,58);
+ ctx.lineTo(285,70);
+ ctx.lineTo(245,70);
+ ctx.fillStyle="red";
+ ctx.fill();
+
+ ctx.beginPath();
+ ctx.rect(30,80,3,20);
+ ctx.fillStyle="black";
+ ctx.fill();
+ //ctx.stroke();
+
+ ctx.beginPath();
+ ctx.moveTo(285,70);
+ ctx.lineTo(285,85);
+ ctx.lineTo(245,90);
+ ctx.lineTo(245,70);
+ ctx.fillStyle="#614051";
+ ctx.fill();
+   
+ ctx.beginPath();
+ ctx.moveTo(25,75);
+ ctx.quadraticCurveTo(31.5,84,38,75);
+ ctx.lineTo(38,50);
+ ctx.quadraticCurveTo(31.5,45,25,50);
+ ctx.lineTo(25,75);
+ ctx.stroke();
+ ctx.fillStyle="#1A1110";
+ ctx.fill();
+ 
+ ctx.beginPath();
+ ctx.rect(0,100,1000,5);
+ //ctx.stroke();
+ ctx.fillStyle="#353839";
+ ctx.fill();
+ 
+ ctx.beginPath();
+ ctx.arc(135,50,10,185.5,(2.1*Math.PI));
+ ctx.fillStyle="#FFF700";
+ ctx.fill();
+ ctx.lineWidth=4;
+ ctx.strokeStyle="#FFAA1D";
+ ctx.stroke();
+
+
+    </script>
+</body>
+</html>
